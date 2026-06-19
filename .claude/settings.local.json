@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-Process -Name \"java\" -ErrorAction SilentlyContinue)",
+      "PowerShell(Stop-Process -Force)",
+      "PowerShell(Test-NetConnection -ComputerName localhost -Port 8080 -WarningAction SilentlyContinue)",
+      "PowerShell(cd \"D:\\\\factoryflow-ai\\\\factoryflow-ai\\\\backend-api\"; .\\\\mvnw.cmd compile -q 2>&1; Write-Host \"Compile exit: $LASTEXITCODE\")",
+      "PowerShell(Start-Sleep -Seconds 18; $r = try { Invoke-WebRequest -Uri \"http://localhost:8080/api/incidents?page=0&size=3\" -UseBasicParsing } catch { $null }; if \\($r\\) { Write-Host \"OK $\\($r.StatusCode\\)\"; $r.Content | ConvertFrom-Json | Select-Object totalElements, totalPages | ConvertTo-Json } else { Write-Host \"Still not up or still failing — checking logs:\"; Get-Content \"C:\\\\Users\\\\panak\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\d--factoryflow-ai-factoryflow-ai\\\\ca2c2d73-af77-4700-a34e-9a283f99b2ea\\\\tasks\\\\b64oqah8j.output\" | Select-String \"ERROR|Exception|Started\" | Select-Object -First 10 })",
+      "PowerShell($r = Invoke-WebRequest -Uri \"http://localhost:8080/api/knowledge\" -UseBasicParsing; $r.Content | ConvertFrom-Json | ConvertTo-Json -Depth 3)",
+      "PowerShell(cd \"D:\\\\factoryflow-ai\\\\factoryflow-ai\\\\backend-api\"; .\\\\mvnw.cmd compile -q; Write-Host \"Compile: $LASTEXITCODE\")"
+    ]
+  }
+}

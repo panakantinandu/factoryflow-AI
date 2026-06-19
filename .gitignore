@@ -1,0 +1,63 @@
+# ── Python / Agent Service ────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+agent-service/venv/
+agent-service/.venv/
+agent-service/*.egg-info/
+agent-service/dist/
+agent-service/build/
+*.so
+
+# ── Environment / Secrets ─────────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# ── Java / Spring Boot ────────────────────────────────────────────────────────
+backend-api/target/
+backend-api/*.class
+backend-api/*.jar
+backend-api/*.war
+backend-api/*.ear
+*.class
+hs_err_pid*
+
+# ── Maven wrapper cache (keep the wrapper scripts, ignore downloaded distro) ──
+!backend-api/mvnw
+!backend-api/mvnw.cmd
+!backend-api/.mvn/
+
+# ── Node / React Frontend ─────────────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/coverage/
+
+# ── IDE / Editor ──────────────────────────────────────────────────────────────
+.idea/
+*.iml
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Docker ────────────────────────────────────────────────────────────────────
+docker-compose.override.yml
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
