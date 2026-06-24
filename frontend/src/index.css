@@ -36,3 +36,65 @@ body {
 .slide-in {
   animation: slide-in 0.2s ease-out forwards;
 }
+
+/* ── File Read Zone ─────────────────────────────────────────────────────────── */
+
+@keyframes scan-sweep {
+  0%   { top: 1%;  opacity: 0; }
+  4%   { opacity: 1; }
+  96%  { opacity: 1; }
+  100% { top: 99%; opacity: 0; }
+}
+.scan-line {
+  position: absolute;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #3b82f6 20%, #93c5fd 50%, #3b82f6 80%, transparent 100%);
+  box-shadow: 0 0 8px #3b82f6, 0 0 20px #3b82f640;
+  animation: scan-sweep 1.4s linear infinite;
+  pointer-events: none;
+  z-index: 20;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 5px #3b82f640, 0 0 12px #3b82f620, inset 0 0 5px #3b82f608; }
+  50%       { box-shadow: 0 0 14px #3b82f670, 0 0 28px #3b82f640, inset 0 0 10px #3b82f612; }
+}
+.glow-box {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes hex-flicker {
+  0%, 100% { opacity: 0.55; }
+  30%       { opacity: 0.9; }
+  70%       { opacity: 0.35; }
+}
+.hex-row {
+  animation: hex-flicker 0.18s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.75); }
+}
+.pulse-dot {
+  animation: pulse-dot 1s ease-in-out infinite;
+}
+
+@keyframes drop-zone-appear {
+  from { opacity: 0; transform: scaleY(0.92); }
+  to   { opacity: 1; transform: scaleY(1); }
+}
+.file-drop-zone {
+  animation: drop-zone-appear 0.15s ease-out forwards;
+  transform-origin: top;
+}
+
+@keyframes done-flash {
+  0%   { box-shadow: 0 0 0 0 #22c55e60; }
+  50%  { box-shadow: 0 0 16px 4px #22c55e40; }
+  100% { box-shadow: 0 0 0 0 #22c55e00; }
+}
+.done-glow {
+  animation: done-flash 0.8s ease-out forwards;
+}

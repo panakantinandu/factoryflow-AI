@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useCallback } from 'react'
+import { FileReadZone } from './FileReadZone'
 
 interface Props {
   onSubmit: (input: string, shift: string) => void
@@ -14,12 +15,14 @@ const DEMO_PROMPTS = [
 export function ChatInput({ onSubmit, isLoading }: Props) {
   const [input, setInput] = useState('')
   const [shift, setShift] = useState('Day')
+  const [fileTag, setFileTag] = useState<string | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const handleSubmit = () => {
     if (!input.trim() || isLoading) return
     onSubmit(input.trim(), shift)
     setInput('')
+    setFileTag(null)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -28,9 +31,18 @@ export function ChatInput({ onSubmit, isLoading }: Props) {
     }
   }
 
+  const handleFileRead = useCallback((text: string, filename: string) => {
+    const MAX = 8_000
+    const trimmed = text.length > MAX ? text.slice(0, MAX) + '\n…[truncated]' : text
+    setInput(trimmed)
+    setFileTag(filename)
+    setTimeout(() => textareaRef.current?.focus(), 50)
+  }, [])
+
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-3 text-xs text-gray-400">
+      {/* Shift + file attach row */}
+      <div className="flex items-center gap-3 text-xs text-gray-400 flex-wrap">
         <span className="text-factory-muted">SHIFT</span>
         {['Day', 'Evening', 'Night'].map((s) => (
           <button
@@ -45,8 +57,27 @@ export function ChatInput({ onSubmit, isLoading }: Props) {
             {s}
           </button>
         ))}
+        <span className="ml-auto">
+          <FileReadZone onFileRead={handleFileRead} disabled={isLoading} />
+        </span>
       </div>
 
+      {/* File badge — shown when a file has been loaded */}
+      {fileTag && (
+        <div className="flex items-center gap-2 text-[10px] font-mono text-factory-accent bg-blue-950/20 border border-factory-accent/30 rounded px-3 py-1 slide-in">
+          <span>⊞</span>
+          <span className="truncate">{fileTag}</span>
+          <button
+            onClick={() => { setInput(''); setFileTag(null) }}
+            className="ml-auto text-factory-muted hover:text-red-400 transition-colors shrink-0"
+            title="Clear file"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      {/* Textarea */}
       <div className="relative">
         <textarea
           ref={textareaRef}
@@ -54,7 +85,7 @@ export function ChatInput({ onSubmit, isLoading }: Props) {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Describe the alarm or issue in plain language…"
-          rows={3}
+          rows={fileTag ? 5 : 3}
           disabled={isLoading}
           className="w-full bg-factory-panel border border-factory-border rounded-lg px-4 py-3 text-sm text-gray-100 placeholder-factory-muted resize-none focus:outline-none focus:border-factory-accent transition-colors disabled:opacity-50"
         />
@@ -70,11 +101,12 @@ export function ChatInput({ onSubmit, isLoading }: Props) {
         </div>
       </div>
 
+      {/* Demo prompts */}
       <div className="flex flex-wrap gap-2">
         {DEMO_PROMPTS.map((p, i) => (
           <button
             key={i}
-            onClick={() => setInput(p)}
+            onClick={() => { setInput(p); setFileTag(null) }}
             disabled={isLoading}
             className="text-xs px-3 py-1 bg-factory-panel border border-factory-border text-factory-muted hover:text-gray-300 hover:border-gray-500 rounded transition-colors disabled:opacity-40 truncate max-w-xs"
           >
