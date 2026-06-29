@@ -28,7 +28,7 @@
 
 ## What It Looks Like
 
-```
+```mermaid
 ┌─ FactoryFlow AI ────────────────────────────────────────────────────────────┐
 │                                                                              │
 │  ◈  FactoryFlow     ┊  Diagnose Alarm                                       │
